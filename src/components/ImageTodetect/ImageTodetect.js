@@ -1,6 +1,7 @@
 import React from 'react';
 
 
+
 const ImageTodetect = ({imageUrl, displayBox}) =>{
     return(
       <div className='center'>

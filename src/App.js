@@ -31,7 +31,7 @@ class App extends Component {
           super()
           this.state ={ input:'' , 
                         imageUrl:'', // the imageUrl get display when the detect buttton is clicked
-                         box: '',
+                         box: {},
             }
        }
   // on input change Function
@@ -48,22 +48,24 @@ class App extends Component {
      const width = Number(imageUrl.width);
      console.log(height, width);
      return{
-        leftCol : Clarifai.leftCol * height,
-        topRow : Clarifai.topRow * width,
-        rightCol: height - (Clarifai.right * width),
-        bottomRow: width -(Clarifai.bottomRow* height)
+        leftCol : clarifaiFData.left_col * height,
+        topRow : clarifaiFData.top_row * width,
+        rightCol: width - (clarifaiFData.right_col * width),
+        bottomRow: height -(clarifaiFData.bottom_row * height)
      }
 
   };
 
   DisplayFaceBox =(box) => {
+    console.log("taiwo");
+    console.log(box);
     this.setState({box: box})
   }
   // on click detect button Function perform the functions within it
   onDetectButtonClick = () =>{
     this.setState({imageUrl:this.state.input})
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    .then(response =>this.calculateFcaeLocation(response))
+    .then(response => this.DisplayFaceBox(this.calculateFcaeLocation(response)))
      .catch(err => console.log(err));
 
   };
@@ -81,7 +83,7 @@ class App extends Component {
             onDetectButtonClick={this.onDetectButtonClick}
             onInputChangeFunction={this.onInputChangeFunction} 
         />
-        <ImageTodetect displayBox={this.calculateFcaeLocation} imageUrl={this.state.imageUrl}/> 
+        <ImageTodetect box={this.state.box} imageUrl={this.state.imageUrl}/> 
       </div>
     );
   }
