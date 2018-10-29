@@ -4,6 +4,7 @@ import './App.css';
 import Logo from './components/Logo/Logo';
 import Clarifai  from 'clarifai';
 import Rank from './components/Rank/Rank';
+import Signin from './components/signin/sign'
 import Imagelinkform from './components/ImageLinkForm/Imagelinkform';
 import Particles from 'react-particles-js';
 import ImageTodetect from './components/ImageTodetect/ImageTodetect';
@@ -77,6 +78,7 @@ class App extends Component {
               params={particleOptions}
             />
         <Navigation/>
+        <Signin/>
         <Logo/>
         <Rank/>
         <Imagelinkform 
