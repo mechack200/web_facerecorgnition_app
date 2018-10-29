@@ -5,6 +5,7 @@ import Logo from './components/Logo/Logo';
 import Clarifai  from 'clarifai';
 import Rank from './components/Rank/Rank';
 import Signin from './components/signin/sign'
+import Register from './components/Register/Register'
 import Imagelinkform from './components/ImageLinkForm/Imagelinkform';
 import Particles from 'react-particles-js';
 import ImageTodetect from './components/ImageTodetect/ImageTodetect';
@@ -33,6 +34,8 @@ class App extends Component {
           this.state ={ input:'' , 
                         imageUrl:'', // the imageUrl get display when the detect buttton is clicked
                          box: {},
+                         route:'signin',
+                         isSignedin : false
             }
        }
   // on input change Function
@@ -70,22 +73,43 @@ class App extends Component {
      .catch(err => console.log(err));
 
   };
+  handleOnRouteChange = (route) =>{
+  //  if the route is in signed out page 
+   if(route === "signout"){
+     this.setState({isSignedin: false})
+   }
+   else if(route === "home"){
+     this.setState({isSignedin: true})
+   }
+  //  update the state
+   this.setState({route: route})
+  };
   
   render() {
+   // const {route} = this.state;
     return (
       <div className="App">
         <Particles className='particle_styling'
               params={particleOptions}
             />
-        <Navigation/>
-        <Signin/>
-        <Logo/>
-        <Rank/>
-        <Imagelinkform 
-            onDetectButtonClick={this.onDetectButtonClick}
-            onInputChangeFunction={this.onInputChangeFunction} 
-        />
-        <ImageTodetect box={this.state.box} imageUrl={this.state.imageUrl}/> 
+        <Navigation isSignedin={this.state.isSignedin} onRouteChange={this.handleOnRouteChange}/>
+         {/*if route is home return home app componnet page */}
+        { 
+         this.state.route ==="home" ?
+           <div>
+            <Logo/>
+            <Rank/>
+            <Imagelinkform 
+              onDetectButtonClick={this.onDetectButtonClick}
+             />
+            <ImageTodetect box={this.state.box} imageUrl={this.state.imageUrl}/>
+          </div> 
+         
+          :(
+           this.state.route === "signin"? <Signin onRouteChange={this.handleOnRouteChange}/>
+           : <Register onRouteChange={this.handleOnRouteChange} /> 
+          )  
+        } 
       </div>
     );
   }
